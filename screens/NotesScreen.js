@@ -1,4 +1,5 @@
-import firebase from "../database/firebaseDB"
+import firebase from "../database/firebaseDB";
+
 import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
@@ -9,23 +10,37 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
+//import firebase from "../database/firebase";
+
+const db = firebase.firestore().collection("todo");
+
 export default function NotesScreen({ navigation, route }) {
   const [notes, setNotes] = useState([]);
 
-useEffect(() => {
-  const unsubscribe = firebase
-  .firestore()
-  .collection("todo")
-})
+  useEffect(() => {
+    const unsubscribe = db.orderBy("created").onSnapshot((collection) => {
+      const updatedNotes = collection.docs.map((doc) => { 
+        const noteObject = {
+          ...doc.data(),
+          id: doc.id,
+          };
+          console.log(noteObject);
+          return noteObject
+        });
+        setNotes(updatedNotes);
+     });  
 
+    return unsubscribe;
+  }, []);
 
-
+/*
   firebase.firestore().collection("testing").add({
     title:"Testing! Does this work???",
     body:"This is to check the Integration is working",
     potato: true,
     question:"Why is there a potato bool here",
   });
+*/
 
   // This is to set up the top right button
   useEffect(() => {
@@ -52,10 +67,9 @@ useEffect(() => {
       const newNote = {
         title: route.params.text,
         done: false,
-        id: notes.length.toString(),
+        created: firebase.firestore.FieldValue.serverTimestamp(),
       };
-      firebase.firestore().collection("todo").add(newNote);
-      setNotes([...notes, newNote]);
+      db.add(newNote);
     }
   }, [route.params?.text]);
 
@@ -66,9 +80,12 @@ useEffect(() => {
   // This deletes an individual note
   function deleteNote(id) {
     console.log("Deleting " + id);
+    db.doc(id).delete();
     // To delete that item, we filter out the item we don't want
-    setNotes(notes.filter((item) => item.id !== id));
-  }
+    }
+
+  //  setNotes(notes.filter((item) => item.id !== id));
+  
 
   // The function to render each row in our FlatList
   function renderItem({ item }) {
