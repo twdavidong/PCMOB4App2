@@ -12,6 +12,14 @@ import { Ionicons } from "@expo/vector-icons";
 export default function NotesScreen({ navigation, route }) {
   const [notes, setNotes] = useState([]);
 
+useEffect(() => {
+  const unsubscribe = firebase
+  .firestore()
+  .collection("todo")
+})
+
+
+
   firebase.firestore().collection("testing").add({
     title:"Testing! Does this work???",
     body:"This is to check the Integration is working",
