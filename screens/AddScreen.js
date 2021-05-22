@@ -11,7 +11,7 @@ export default function AddScreen({ navigation }) {
   const [text, setText] = useState("");
 
   return (
-    <View style={[styles.container, { backgroundColor: "white" }]}>
+    <View style={[styles.container, { backgroundColor: "#ff9999" }]}>
       <Text style={{ fontSize: 24 }}>What do you want to add?</Text>
       <TextInput
         style={styles.textInput}
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   },
   button: {
     padding: 10,
-    backgroundColor: "orange",
+    backgroundColor: "#ffff00",
     borderRadius: 5,
     margin: 10,
     marginTop: 30,

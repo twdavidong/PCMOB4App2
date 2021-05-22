@@ -12,6 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 //import firebase from "../database/firebase";
 
+
 const db = firebase.firestore().collection("todo");
 
 export default function NotesScreen({ navigation, route }) {
@@ -52,7 +53,7 @@ export default function NotesScreen({ navigation, route }) {
             size={30}
             color="black"
             style={{
-              color: "#f55",
+              color: "#ffd9b3",
               marginRight: 10,
             }}
           />
@@ -82,10 +83,8 @@ export default function NotesScreen({ navigation, route }) {
     console.log("Deleting " + id);
     db.doc(id).delete();
     // To delete that item, we filter out the item we don't want
+    setNotes(notes.filter((item) => item.id !== id));
     }
-
-  //  setNotes(notes.filter((item) => item.id !== id));
-  
 
   // The function to render each row in our FlatList
   function renderItem({ item }) {
@@ -100,7 +99,7 @@ export default function NotesScreen({ navigation, route }) {
           flexDirection: "row",
           justifyContent: "space-between",
         }}
-      >
+      >        
         <Text>{item.title}</Text>
         <TouchableOpacity onPress={() => deleteNote(item.id)}>
           <Ionicons name="trash" size={16} color="#944" />
@@ -124,7 +123,7 @@ export default function NotesScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffc",
+    backgroundColor: "#33ff99",
     alignItems: "center",
     justifyContent: "center",
   },
