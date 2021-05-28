@@ -6,6 +6,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  ImageBackground,
   FlatList,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -14,6 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 
 const db = firebase.firestore().collection("todo");
+
 
 export default function NotesScreen({ navigation, route }) {
   const [notes, setNotes] = useState([]);
@@ -90,16 +92,16 @@ export default function NotesScreen({ navigation, route }) {
   function renderItem({ item }) {
     return (
       <View
-        style={{
-          padding: 10,
-          paddingTop: 20,
-          paddingBottom: 20,
-          borderBottomColor: "#ccc",
-          borderBottomWidth: 1,
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
-      >        
+          style={{
+            padding: 10,
+            paddingTop: 20,
+            paddingBottom: 20,
+            borderBottomColor: "#ccc",
+            borderBottomWidth: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+      >
         <Text>{item.title}</Text>
         <TouchableOpacity onPress={() => deleteNote(item.id)}>
           <Ionicons name="trash" size={16} color="#944" />
@@ -107,24 +109,33 @@ export default function NotesScreen({ navigation, route }) {
       </View>
     );
   }
+  const image = { uri: "../assets/image.jpg" };
 
   return (
     <View style={styles.container}>
+  <ImageBackground source={require('../assets/image.jpg')} style={styles.image}>
       <FlatList
         data={notes}
         renderItem={renderItem}
         style={{ width: "100%" }}
         keyExtractor={(item) => item.id.toString()}
-      />
-    </View>
+      /></ImageBackground>
+ </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#33ff99",
+  //  backgroundColor: "#33ff99",
     alignItems: "center",
     justifyContent: "center",
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center",
+    width: '100%',
+    height: '100%',
   },
 });
